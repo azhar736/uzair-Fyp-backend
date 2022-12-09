@@ -27,8 +27,8 @@ const adSchema = new Schema({
     type: Number,
     required: true,
   },
-  images: {
-    type: [String],
+  image: {
+    type: String,
     required: true,
   },
   teeth: {
@@ -39,6 +39,15 @@ const adSchema = new Schema({
     type: String,
     required: true,
   },
+  sellerId: {
+    type: String,
+    required: true,
+  },
+  bids: [
+    {
+      type: String,
+    },
+  ],
 });
 
 module.exports = mongoose.model("Ads", adSchema);

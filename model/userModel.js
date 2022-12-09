@@ -22,6 +22,11 @@ const userSchema = new Schema({
     required: true,
     minLength: 8,
   },
+  userbids: [
+    {
+      type: String,
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);
