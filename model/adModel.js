@@ -20,16 +20,15 @@ const adSchema = new Schema({
     required: true,
   },
   age: {
-    type: Number,
+    type: String,
     required: true,
   },
   weight: {
     type: Number,
     required: true,
   },
-  image: {
+  Photo: {
     type: String,
-    required: true,
   },
   teeth: {
     type: Number,
@@ -45,7 +44,8 @@ const adSchema = new Schema({
   },
   bids: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Bid",
     },
   ],
 });

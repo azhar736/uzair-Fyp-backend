@@ -8,7 +8,7 @@ const {
 const router = express.Router();
 
 router.post("/signup", SignUp);
-router.get("/signin", SignIn);
+router.post("/signin", SignIn);
 router.post("/forget", forgotPasswords);
 router.post("/change-password", changePassword);
 module.exports = router;

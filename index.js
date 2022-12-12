@@ -1,13 +1,15 @@
 require("dotenv").config();
 const express = require("express");
+var cors = require("cors");
 const app = express();
 const port = 5000;
 const db = require("./db/db");
 var bodyParser = require("body-parser");
 db();
-
-// parse application/json
+app.use("/uploads", express.static("uploads"));
+app.use(cors());
 app.use(bodyParser.json());
+// parse application/json
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

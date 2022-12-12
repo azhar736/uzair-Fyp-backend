@@ -6,18 +6,16 @@ const { find } = require("../model/adModel");
 
 //POST an ADS
 const addPost = async (req, res) => {
-  const {
-    name,
-    type,
-    price,
-    description,
-    age,
-    weight,
-    image,
-    teeth,
-    city,
-    sellerId,
-  } = req.body;
+  console.log(req.file);
+  console.log(req.body);
+  if (req.file) {
+    res.status(200);
+  } else {
+    res.status(404).send("not added");
+  }
+  const Photo = req.file.filename;
+  const { name, type, price, description, age, weight, teeth, city, sellerId } =
+    req.body;
   try {
     const newPost = await new Ad({
       name,
@@ -26,7 +24,7 @@ const addPost = async (req, res) => {
       description,
       age,
       weight,
-      image,
+      Photo,
       teeth,
       city,
       sellerId,
@@ -56,9 +54,11 @@ const getAllPost = async (req, res) => {
 const getSinglePost = async (req, res) => {
   const { id } = req.params;
   try {
-    const post = await Ad.findById({ _id: id });
+    const post = await Ad.findById({ _id: id }).populate("bids");
     if (post) {
-      res.send({ success: true, data: post });
+      const { name } = await User.findOne({ _id: post.sellerId });
+
+      res.send({ success: true, data: post, sellarName: name });
     }
   } catch (error) {
     res.send({ success: false, error: error.message });
@@ -97,7 +97,13 @@ const makeBid = async (req, res) => {
   const { buyerId, price } = req.body;
   var post, user;
   try {
-    const makebid = await new Bid({ buyerId, price, postId }).save();
+    const { name } = await User.findOne({ _id: buyerId });
+    const makebid = await new Bid({
+      buyerId,
+      price,
+      postId,
+      bidderName: name,
+    }).save();
     if (makebid) {
       const post1 = await Ad.findOne({ _id: postId });
       if (post1.bids.length >= 1) {
@@ -129,6 +135,17 @@ const makeBid = async (req, res) => {
   }
 };
 
+// get users ads
+const getUserPost = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const posts = await Ad.find({ sellerId: userId });
+    if (posts.length > 0) res.send({ success: true, data: posts });
+  } catch (error) {
+    res.send({ success: false, error: error.message });
+  }
+};
+
 //Winner of Bid
 
 module.exports = {
@@ -138,4 +155,5 @@ module.exports = {
   deletePost,
   updatePost,
   makeBid,
+  getUserPost,
 };

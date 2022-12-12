@@ -4,17 +4,20 @@ const { Schema } = mongoose;
 
 const bidSchema = new Schema({
   buyerId: {
-    type: String,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 
   postId: {
-    type: String,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Ad",
   },
   price: {
     type: Number,
     required: true,
+  },
+  bidderName: {
+    type: String,
   },
 });
 

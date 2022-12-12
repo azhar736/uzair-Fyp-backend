@@ -46,10 +46,11 @@ const SignUp = asyncHandler(async (req, res, next) => {
 //SignIn Controller
 
 const SignIn = asyncHandler(async (req, res, next) => {
+  console.log(req.body);
   // res.send("Sign In Route...");
   const { email, password } = req.body;
 
-  //Check both fields
+  // Check both fields
   if (!email || !password) {
     res.status(400);
     throw new Error("Please include all fields");
@@ -89,15 +90,9 @@ const SignIn = asyncHandler(async (req, res, next) => {
 
   //SignIn the User
 
-  res.json({
+  res.send({
     message: "Sign In Successfully",
     token,
-    user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      phoneno: user.phoneno,
-    },
   });
 });
 
