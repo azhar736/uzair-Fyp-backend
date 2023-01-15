@@ -9,11 +9,13 @@ const {
   updatePost,
   makeBid,
   getUserPost,
+  getFilterPost,
 } = require("../controllers/adController");
 const router = express.Router();
 
 router.post("/addPost", upload.single("Photo"), addPost);
 router.get("/getAllPost", getAllPost);
+router.get("/getFilterPost", getFilterPost);
 router.get("/getSinglePost/:id", getSinglePost);
 router.delete("/deletePost/:id", deletePost);
 router.patch("/updatePost/:id", updatePost);

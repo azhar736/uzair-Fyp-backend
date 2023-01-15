@@ -65,6 +65,18 @@ const getSinglePost = async (req, res) => {
   }
 };
 
+//GET INDIVISUAL POST BASED ON QUERY
+const getFilterPost = async (req, res, next) => {
+  const query = req.query;
+  try {
+    const filteredPost = await Ad.find(query);
+    if (filteredPost) {
+      res.send({ success: true, data: filteredPost });
+    }
+  } catch (error) {
+    res.send({ success: false, error: error.message });
+  }
+};
 //DELETE INDIVISUAL ADS
 
 const deletePost = async (req, res) => {
@@ -152,6 +164,7 @@ module.exports = {
   addPost,
   getAllPost,
   getSinglePost,
+  getFilterPost,
   deletePost,
   updatePost,
   makeBid,
