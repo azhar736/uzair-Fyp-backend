@@ -64,14 +64,34 @@ const getSinglePost = async (req, res) => {
     res.send({ success: false, error: error.message });
   }
 };
-
+// try {
+//   const allPost = await Ad.find({});
+//   if (allPost) res.send({ success: true, data: allPost });
+// } catch (error) {
+//   res.send({ success: false, error: error.message });
+// }
 //GET INDIVISUAL POST BASED ON QUERY
 const getFilterPost = async (req, res, next) => {
-  const query = req.query;
+  const { city, type } = req.query;
+  console.log(req.query);
   try {
-    const filteredPost = await Ad.find(query);
-    if (filteredPost) {
-      res.send({ success: true, data: filteredPost });
+    if (req.query.type === "all") {
+      console.log("inside default type");
+      if (city === null || city === undefined) {
+        console.log("inside if");
+        const allPost = await Ad.find({});
+        if (allPost) res.send({ success: true, data: allPost });
+      } else {
+        console.log("inside else");
+        const allPost = await Ad.find({ city });
+        if (allPost) res.send({ success: true, data: allPost });
+      }
+    } else {
+      console.log("inside Else any city");
+      const filteredPost = await Ad.find(req.query);
+      if (filteredPost) {
+        res.send({ success: true, data: filteredPost });
+      }
     }
   } catch (error) {
     res.send({ success: false, error: error.message });

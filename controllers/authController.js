@@ -93,6 +93,7 @@ const SignIn = asyncHandler(async (req, res, next) => {
   res.send({
     message: "Sign In Successfully",
     token,
+    data: user,
   });
 });
 
@@ -107,4 +108,31 @@ const forgotPasswords = asyncHandler(async (req, res, next) => {
 const changePassword = asyncHandler(async (req, res, next) => {
   res.send("Chnage Password");
 });
-module.exports = { SignUp, SignIn, forgotPasswords, changePassword };
+
+const getAlluser = async (req, res) => {
+  try {
+    const allUser = await User.find({});
+    if (allUser) res.send({ success: true, data: allUser });
+  } catch (error) {
+    res.send({ success: false, error: error.message });
+  }
+};
+const getSingleUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById({ _id: id });
+    if (user) {
+      res.send({ success: true, data: user });
+    }
+  } catch (error) {
+    res.send({ success: false, error: error.message });
+  }
+};
+module.exports = {
+  SignUp,
+  SignIn,
+  forgotPasswords,
+  changePassword,
+  getAlluser,
+  getSingleUser,
+};
