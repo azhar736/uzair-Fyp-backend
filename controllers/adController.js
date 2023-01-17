@@ -73,11 +73,15 @@ const getSinglePost = async (req, res) => {
 //GET INDIVISUAL POST BASED ON QUERY
 const getFilterPost = async (req, res, next) => {
   const { city, type } = req.query;
+  var query = req.query;
+  if (city === "null") {
+    query = { type };
+  }
   console.log(req.query);
   try {
     if (req.query.type === "all") {
       console.log("inside default type");
-      if (city === null || city === undefined) {
+      if (city === null || city === undefined || city === "null") {
         console.log("inside if");
         const allPost = await Ad.find({});
         if (allPost) res.send({ success: true, data: allPost });
@@ -88,7 +92,7 @@ const getFilterPost = async (req, res, next) => {
       }
     } else {
       console.log("inside Else any city");
-      const filteredPost = await Ad.find(req.query);
+      const filteredPost = await Ad.find(query);
       if (filteredPost) {
         res.send({ success: true, data: filteredPost });
       }
